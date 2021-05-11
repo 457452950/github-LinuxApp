@@ -1,8 +1,8 @@
-OBJS = Client3.o 
+OBJS = Server3.o 
 cc = gcc
 #CC = arm-none-linux-gnueabi-gcc
 CFLAGS = -g
-EXEC = Client3
+EXEC = Server3
 
 all:$(EXEC)
 $(EXEC):$(OBJS)

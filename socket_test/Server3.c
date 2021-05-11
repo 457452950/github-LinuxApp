@@ -13,7 +13,7 @@
 #include <time.h>
 #include <pthread.h>
 
-#define MYPORT 8887
+#define MYPORT 4000
 #define QUEUE 20
 #define BUFFER_SIZE 1024
 
