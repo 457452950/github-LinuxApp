@@ -1,13 +1,19 @@
 PP = g++
 CC = gcc
-EXEC = threadTest
-OBJS = threadTest.o
+EXEC = threadTest thread
+OBJS = threadTest.o thread.o
 FLAG = -g -o
 
 all:$(EXEC)
 
-$(EXEC):$(OBJS)
-	$(PP) $(FLAG) $@ $(OBJS) -lpthread
+threadTest:threadTest.o
+	$(PP) $(FLAG) $@ threadTest.o -lpthread
+
+
+thread:thread.o
+	$(PP) $(FLAG) $@ threadTest.o -lpthread
+
+
 
 clean:
 	rm -f $(OBJS) $(EXEC)
