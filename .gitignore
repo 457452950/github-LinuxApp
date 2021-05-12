@@ -35,3 +35,5 @@
 # Log File
 *.log
 
+# Linux Shell Bash
+*.sh

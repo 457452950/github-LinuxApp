@@ -1,5 +1,5 @@
 PP = g++
-TARGET = Client Server _freecplus.o
+TARGET = Client Server
 OBJS = Client.o Server.o
 
 all : $(TARGET)
