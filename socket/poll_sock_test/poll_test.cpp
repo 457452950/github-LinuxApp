@@ -127,7 +127,7 @@ int main(int argc, char* argv[])
 					// 重新计算maxfd的值
 					if (eventfd == maxfd)
 					{
-						for (int ii = maxfd; ii > 0; ii++)
+						for (int ii = maxfd; ii > 0; ii--)
 						{
 							if (fds[ii].fd != -1)
 							{

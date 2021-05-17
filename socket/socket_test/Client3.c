@@ -22,6 +22,7 @@ void *send_data(void *data)
     while (1)
     {
         len = recv(sock_cli, buffer, sizeof(buffer), 0);
+        buffer[len] = 0;
         if (strcmp(buffer, "exit\n") == 0)
             break;
         fputs(buffer, stdout);
@@ -37,7 +38,7 @@ void *recev_data(void *data)
     {
         fgets(sendbuf, sizeof(sendbuf), stdin);
 
-        send(sock_cli, sendbuf, 1024, 0);
+        send(sock_cli, sendbuf, strlen(sendbuf), 0);
         usleep(1000);
     }
 }
