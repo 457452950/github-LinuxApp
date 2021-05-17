@@ -10,7 +10,7 @@
 #include <fcntl.h>
 #include <sys/shm.h>
 
-#define MYPORT 8887
+#define MYPORT 4000
 #define BUFFER_SIZE 1024
 
 int sock_cli;
