@@ -12,7 +12,7 @@ using namespace std;
 // 初始化服务端的监听端口
 int initserver(int port);
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
 	if (argc != 2)
 	{
@@ -29,18 +29,18 @@ int main(int argc, char* argv[])
 		printf("initsock() failed.\n");
 		return -1;
 	}
-	
-	int maxfd;  // fds数组中需要监视的socket的大小
+
+	int maxfd; // fds数组中需要监视的socket的大小
 	struct pollfd fds[MAXNFDS];
 
 	for (int ii = 0; ii < MAXNFDS; ++ii)
 	{
-		fds[ii].fd = -1;	// 初始化数组，把全部的fd设置为-1.
+		fds[ii].fd = -1; // 初始化数组，把全部的fd设置为-1.
 	}
 
 	// 把listensock添加到数组
 	fds[listensock].fd = listensock;
-	fds[listensock].events = POLLIN;	// 有数据可读事件，包括新客户端的连接、客户端socket有数据可读和\
+	fds[listensock].events = POLLIN; // 有数据可读事件，包括新客户端的连接、客户端socket有数据可读和\
 											客户端socket断开三种情况
 	maxfd = listensock;
 
@@ -58,19 +58,19 @@ int main(int argc, char* argv[])
 		}
 
 		// 超时
-		if(infds == 0)
+		if (infds == 0)
 		{
 			printf("poll timeout .\n");
 			continue;
 		}
-		
+
 		// 检查有事件发生的socket，包括监听和客户端连接的socket。
 		// 这里是客户端的socket事件，每次都要遍历整个集合，因为有可能有多个socket有事件。
 		for (int eventfd = 0; eventfd <= maxfd; eventfd++)
 		{
 			if (fds[eventfd].fd < 0)
 				continue;
-			if ((fds[eventfd].revents & POLLIN) == 0) 
+			if ((fds[eventfd].revents & POLLIN) == 0)
 				continue;
 
 			fds[eventfd].revents = 0;
@@ -80,11 +80,12 @@ int main(int argc, char* argv[])
 				// 如果发生事件的是listensock，表示有新的客户端连上来。
 				struct sockaddr_in client;
 				socklen_t len = sizeof(client);
-				int clientsock = accept(listensock, (struct sockaddr* )&client, &len);
+				int clientsock = accept(listensock, (struct sockaddr *)&client, &len);
 
 				if (clientsock < 0)
 				{
-					printf("accept() failed.\n"); continue;
+					printf("accept() failed.\n");
+					continue;
 				}
 
 				printf("client(socket = %d) connected ok,\n", clientsock);
@@ -103,10 +104,9 @@ int main(int argc, char* argv[])
 				{
 					maxfd = clientsock;
 				}
-				
+
 				printf("maxfd = %d\n", maxfd);
 				continue;
-				
 			}
 			else
 			{
@@ -131,28 +131,25 @@ int main(int argc, char* argv[])
 						{
 							if (fds[ii].fd != -1)
 							{
-								maxfd = ii; break;
+								maxfd = ii;
+								break;
 							}
-							
 						}
 						printf("maxfd = %d\n", maxfd);
 					}
 
 					continue;
 				}
-				
+
 				printf("recv(eventfd = %d, size = %li) : %s\n", eventfd, isize, buffer);
 
 				// 把受到的报文发送回客户端
 				write(eventfd, buffer, strlen(buffer));
 			}
-			
 		}
 	}
 	return 0;
 }
-
-
 
 int initserver(int port)
 {
@@ -163,7 +160,7 @@ int initserver(int port)
 		return -1;
 	}
 
-	// 
+	//
 	int opt = 1;
 	unsigned int len = sizeof(opt);
 	setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &opt, len);
@@ -174,19 +171,19 @@ int initserver(int port)
 	servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
 	servaddr.sin_port = htons(port);
 
-	if (bind(sock, (struct sockaddr * )&servaddr, sizeof(servaddr)) < 0)
+	if (bind(sock, (struct sockaddr *)&servaddr, sizeof(servaddr)) < 0)
 	{
 		printf("bind() failed.\n");
 		close(sock);
 		return -1;
 	}
-	
+
 	if (listen(sock, 5) != 0)
 	{
 		printf("listen() failed.\n");
 		close(sock);
 		return -1;
 	}
-	
+
 	return sock;
 }
